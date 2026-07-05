@@ -1,5 +1,7 @@
 package com.api.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +28,7 @@ public class Categoria {
     private String descripcion;
 
     @Builder.Default
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "categoriaId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("categoriaId")
     private List<Producto> productos = new ArrayList<>();
 }

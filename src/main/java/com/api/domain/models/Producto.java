@@ -1,7 +1,10 @@
 package com.api.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -16,26 +19,24 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String titulo;
-
-    @Column(nullable = false, length = 150)
-    private String calle;
-
     @Column(nullable = false, length = 100)
-    private String ciudad;
+    private String nombre;
 
-    @Column(nullable = false, length = 100)
-    private String estado;
+    @Column(length = 500)
+    private String descripcion;
 
-    @Column(name = "codigo_postal", nullable = false, length = 15)
-    private String codigoPostal;
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal precio;
 
-    @Column(nullable = false, length = 100)
-    private String pais;
+    @Column(nullable = false)
+    private Integer stock;
+
+    @Column(name = "imagen_url", length = 255)
+    private String imagenUrl;
 
     // Relación ManyToOne con la Categoría
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
-    private Categoria categoria;
+    @JsonIgnoreProperties("productos")
+    private Categoria categoriaId;
 }

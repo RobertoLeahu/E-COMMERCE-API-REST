@@ -1,6 +1,8 @@
 package com.api.services;
 
 import com.api.domain.models.Producto;
+import com.api.dto.request.ProductoRequestDTO;
+import com.api.dto.response.ProductoResponseDTO;
 import com.api.respositories.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

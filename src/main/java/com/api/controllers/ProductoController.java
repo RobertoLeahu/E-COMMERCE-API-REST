@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequestMapping("/api/productos")
 public class ProductoController {
 
-    @Autowired(required = true)
+    @Autowired
     private ProductoService productoService;
 
     @PostMapping

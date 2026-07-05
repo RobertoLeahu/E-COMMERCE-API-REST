@@ -28,7 +28,7 @@ public class Categoria {
     private String descripcion;
 
     @Builder.Default
-    @OneToMany(mappedBy = "categoriaId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "categoriaId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("categoriaId")
     private List<Producto> productos = new ArrayList<>();
 }

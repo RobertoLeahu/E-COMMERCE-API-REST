@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface CategoriaRepository extends Repository<Categoria, Long> {
     List<Categoria>findAll();
-    Optional<Categoria>findById(Long id);
+    Categoria findById(Long id);
 }

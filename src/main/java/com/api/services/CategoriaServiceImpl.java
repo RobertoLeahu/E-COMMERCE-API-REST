@@ -1,26 +1,44 @@
 package com.api.services;
 
 import com.api.domain.models.Categoria;
+import com.api.dto.response.CategoriaResponseDTO;
+import com.api.mapper.CategoriaMapper;
 import com.api.respositories.CategoriaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaServiceImpl implements CategoriaService{
 
-    @Autowired
-    private CategoriaRepository categoriaRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final CategoriaMapper categoriaMapper;
 
-    @Override
-    public List<Categoria> obtenerCategorias() {
-        return categoriaRepository.findAll();
+    // INYECCIÓN POR CONSTRUCTOR
+    public CategoriaServiceImpl(CategoriaRepository categoriaRepository, CategoriaMapper categoriaMapper) {
+        this.categoriaRepository = categoriaRepository;
+        this.categoriaMapper = categoriaMapper;
     }
 
     @Override
-    public Optional<Categoria> obtenerCategoriaPorId(Long id) {
-        return categoriaRepository.findById(id);
+    public List<CategoriaResponseDTO> obtenerCategorias() {
+        List<Categoria> categorias = categoriaRepository.findAll();
+        return categorias.stream()
+                .map(categoriaMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CategoriaResponseDTO obtenerCategoriaPorId(Long id) {
+        Categoria categoria = categoriaRepository.findById(id);
+
+        if (categoria == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La categoría con ID " + id + " no existe.");
+        }
+
+        return categoriaMapper.toResponse(categoria);
     }
 }

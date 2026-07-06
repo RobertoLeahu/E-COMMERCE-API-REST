@@ -34,5 +34,4 @@ public class ProductoController {
     public String borrarProducto(@PathVariable Long id) {
         return productoService.borrarProducto(id);
     }
-
 }

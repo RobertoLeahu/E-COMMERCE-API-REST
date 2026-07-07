@@ -1,38 +1,68 @@
 package com.api.services;
 
+import com.api.domain.models.Categoria;
 import com.api.domain.models.Producto;
 import com.api.dto.request.ProductoRequestDTO;
 import com.api.dto.response.ProductoResponseDTO;
+import com.api.mapper.ProductoMapper;
+import com.api.respositories.CategoriaRepository;
 import com.api.respositories.ProductoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductoServiceImpl implements ProductoService{
 
-    @Autowired
     private ProductoRepository productoRepository;
+    private ProductoMapper productoMapper;
+    private CategoriaRepository categoriaRepository;
 
-    @Override
-    public Producto guardarProducto(Producto producto) {
-        return productoRepository.save(producto);
+    public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper, CategoriaRepository categoriaRepository){
+        this.productoRepository = productoRepository;
+        this.productoMapper = productoMapper;
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Override
-    public Optional<Producto> obtenerProductoPorId(Long id) {
-        return productoRepository.findById(id);
+    public ProductoResponseDTO guardarProducto(ProductoRequestDTO productoRequestDTO) {
+
+        Long categoriaId = productoRequestDTO.categoriaId();
+
+        Categoria categoria = categoriaRepository.findById(categoriaId);
+        if (categoria == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La categoría con ID " + categoriaId + " no existe.");
+        }
+
+        Producto productoNuevo = productoMapper.toEntity(productoRequestDTO, categoria);
+        Producto productoGuardado = productoRepository.save(productoNuevo);
+        return productoMapper.toResponse(productoGuardado);
     }
 
     @Override
-    public List<Producto> obtenerProductos() {
-        return productoRepository.findAll();
+    public ProductoResponseDTO obtenerProductoPorId(Long id) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado con id: " + id));
+
+        return productoMapper.toResponse(producto);
+    }
+
+    @Override
+    public List<ProductoResponseDTO> obtenerProductos() {
+        List<Producto> productos = productoRepository.findAll();
+        return productos.stream()
+                .map(productoMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public String borrarProducto(Long id) {
+        if (!productoRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado con id: " + id);
+        }
         productoRepository.deleteById(id);
         return "Producto con id " + id + " borrado correctamente";
     }

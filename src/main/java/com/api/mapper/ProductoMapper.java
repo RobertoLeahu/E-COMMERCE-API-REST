@@ -21,11 +21,11 @@ public class ProductoMapper {
                 producto.getPrecio(),
                 producto.getStock(),
                 producto.getImagenUrl(),
-                producto.getCategoriaId().getNombre() != null ? producto.getNombre() : null
+                producto.getCategoriaId().getNombre() != null ? producto.getCategoriaId().getNombre(): null
         );
     }
 
-    public Producto toEntity(ProductoRequestDTO productoRequestDTO, Categoria categoria){
+    public Producto toEntity(ProductoRequestDTO productoRequestDTO, Categoria categoria) {
 
         if (productoRequestDTO == null) {
             return null;

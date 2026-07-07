@@ -1,8 +1,13 @@
 package com.api.controllers;
 
 import com.api.domain.models.Producto;
+import com.api.dto.request.ProductoRequestDTO;
+import com.api.dto.response.ProductoResponseDTO;
 import com.api.services.ProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +21,26 @@ public class ProductoController {
     private ProductoService productoService;
 
     @PostMapping
-    public Producto guardarProducto(@RequestBody Producto producto) {
-        return productoService.guardarProducto(producto);
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Producto> obtenerProductoPorId(@PathVariable Long id) {
-        return productoService.obtenerProductoPorId(id);
+    public ResponseEntity<ProductoResponseDTO> guardarProducto(@Valid @RequestBody ProductoRequestDTO productoRequestDTO) {
+        ProductoResponseDTO productoGuardado = productoService.guardarProducto(productoRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productoGuardado);
     }
 
     @GetMapping
-    public List<Producto> obtenerProductos() {
-        return productoService.obtenerProductos();
+    public ResponseEntity<List<ProductoResponseDTO>> obtenerProductos() {
+        List<ProductoResponseDTO> productos = productoService.obtenerProductos();
+        return ResponseEntity.ok(productos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductoResponseDTO> obtenerProductoPorId(@PathVariable Long id) {
+        ProductoResponseDTO producto = productoService.obtenerProductoPorId(id);
+        return ResponseEntity.ok(producto);
     }
 
     @DeleteMapping("/{id}")
-    public String borrarProducto(@PathVariable Long id) {
-        return productoService.borrarProducto(id);
+    public ResponseEntity<String> borrarProducto(@PathVariable Long id) {
+        String productoBorrado = productoService.borrarProducto(id);
+        return ResponseEntity.ok(productoBorrado);
     }
 }

@@ -1,6 +1,5 @@
 package com.api.controllers;
 
-import com.api.domain.models.Producto;
 import com.api.dto.request.ProductoRequestDTO;
 import com.api.dto.response.ProductoResponseDTO;
 import com.api.services.ProductoService;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/productos")

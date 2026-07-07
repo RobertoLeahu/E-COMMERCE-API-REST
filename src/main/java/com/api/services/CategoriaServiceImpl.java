@@ -2,6 +2,7 @@ package com.api.services;
 
 import com.api.domain.models.Categoria;
 import com.api.dto.response.CategoriaResponseDTO;
+import com.api.exceptions.CategoryNotFoundException;
 import com.api.mapper.CategoriaMapper;
 import com.api.respositories.CategoriaRepository;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ public class CategoriaServiceImpl implements CategoriaService{
     private final CategoriaRepository categoriaRepository;
     private final CategoriaMapper categoriaMapper;
 
-    // INYECCIÓN POR CONSTRUCTOR
     public CategoriaServiceImpl(CategoriaRepository categoriaRepository, CategoriaMapper categoriaMapper) {
         this.categoriaRepository = categoriaRepository;
         this.categoriaMapper = categoriaMapper;
@@ -36,7 +36,7 @@ public class CategoriaServiceImpl implements CategoriaService{
         Categoria categoria = categoriaRepository.findById(id);
 
         if (categoria == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La categoría con ID " + id + " no existe.");
+            throw new CategoryNotFoundException(id);
         }
 
         return categoriaMapper.toResponse(categoria);

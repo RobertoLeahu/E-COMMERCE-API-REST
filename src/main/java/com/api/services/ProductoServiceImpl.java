@@ -4,6 +4,7 @@ import com.api.domain.models.Categoria;
 import com.api.domain.models.Producto;
 import com.api.dto.request.ProductoRequestDTO;
 import com.api.dto.response.ProductoResponseDTO;
+import com.api.exceptions.ProductNotFoundException;
 import com.api.mapper.ProductoMapper;
 import com.api.respositories.CategoriaRepository;
 import com.api.respositories.ProductoRepository;
@@ -17,9 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class ProductoServiceImpl implements ProductoService{
 
-    private ProductoRepository productoRepository;
-    private ProductoMapper productoMapper;
-    private CategoriaRepository categoriaRepository;
+    final private ProductoRepository productoRepository;
+    final private ProductoMapper productoMapper;
+    final private CategoriaRepository categoriaRepository;
 
     public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper, CategoriaRepository categoriaRepository){
         this.productoRepository = productoRepository;
@@ -45,7 +46,7 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public ProductoResponseDTO obtenerProductoPorId(Long id) {
         Producto producto = productoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado con id: " + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
         return productoMapper.toResponse(producto);
     }
@@ -61,8 +62,9 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public String borrarProducto(Long id) {
         if (!productoRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado con id: " + id);
+            throw new ProductNotFoundException(id);
         }
+
         productoRepository.deleteById(id);
         return "Producto con id " + id + " borrado correctamente";
     }

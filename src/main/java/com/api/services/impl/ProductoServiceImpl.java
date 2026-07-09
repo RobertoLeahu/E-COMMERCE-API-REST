@@ -1,4 +1,4 @@
-package com.api.services;
+package com.api.services.impl;
 
 import com.api.domain.models.Categoria;
 import com.api.domain.models.Producto;
@@ -8,6 +8,7 @@ import com.api.exceptions.ProductNotFoundException;
 import com.api.mapper.ProductoMapper;
 import com.api.respositories.CategoriaRepository;
 import com.api.respositories.ProductoRepository;
+import com.api.services.ProductoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductoServiceImpl implements ProductoService{
+public class ProductoServiceImpl implements ProductoService {
 
     final private ProductoRepository productoRepository;
     final private ProductoMapper productoMapper;

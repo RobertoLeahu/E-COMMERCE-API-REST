@@ -1,19 +1,18 @@
-package com.api.services;
+package com.api.services.impl;
 
 import com.api.domain.models.Categoria;
 import com.api.dto.response.CategoriaResponseDTO;
 import com.api.exceptions.CategoryNotFoundException;
 import com.api.mapper.CategoriaMapper;
 import com.api.respositories.CategoriaRepository;
-import org.springframework.http.HttpStatus;
+import com.api.services.CategoriaService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CategoriaServiceImpl implements CategoriaService{
+public class CategoriaServiceImpl implements CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
     private final CategoriaMapper categoriaMapper;

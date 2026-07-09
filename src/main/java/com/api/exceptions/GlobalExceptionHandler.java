@@ -53,11 +53,37 @@ public class GlobalExceptionHandler {
 
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
-                "Recurso no encontradp",
+                "Recurso no encontrado",
                 ex.getMessage(),
                 request.getRequestURI()
         );
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<ErrorResponse> ProfileNotFoundExceptionHandler(ProfileNotFoundException ex, HttpServletRequest request){
+
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                "Recurso no encontrado",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProfileAlreadyAssignedException.class)
+    public ResponseEntity<ErrorResponse> ProfileAlreadyAssignedExceptionHandler(ProfileAlreadyAssignedException ex, HttpServletRequest request){
+
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                "Conflicto - Perfil ya asignado",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 }

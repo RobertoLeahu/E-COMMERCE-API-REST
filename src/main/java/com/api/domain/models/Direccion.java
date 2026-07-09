@@ -26,7 +26,7 @@ public class Direccion {
     private String ciudad;
 
     @Column(nullable = false, length = 100)
-    private String estado;
+    private String provincia;
 
     @Column(name = "codigo_postal", nullable = false, length = 15)
     private String codigoPostal;

@@ -3,6 +3,7 @@ package com.api.controllers;
 import com.api.dto.request.PerfilRequestDTO;
 import com.api.dto.response.PerfilResponseDTO;
 import com.api.services.impl.PerfilServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class PerfilController {
     }
 
     @PostMapping
-    public ResponseEntity<PerfilResponseDTO> crearPerfil(@RequestBody PerfilRequestDTO perfilRequestDTO) {
+    public ResponseEntity<PerfilResponseDTO> crearPerfil(@Valid @RequestBody PerfilRequestDTO perfilRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(perfilService.crearPerfil(perfilRequestDTO));
     }
 
@@ -35,7 +36,7 @@ public class PerfilController {
     }
 
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<PerfilResponseDTO> actualizarPerfil(@PathVariable Long idUsuario, @RequestBody PerfilRequestDTO perfilRequestDTO) {
+    public ResponseEntity<PerfilResponseDTO> actualizarPerfil(@Valid @PathVariable Long idUsuario, @RequestBody PerfilRequestDTO perfilRequestDTO) {
         return ResponseEntity.ok(perfilService.actualizarPerfil(idUsuario, perfilRequestDTO));
     }
 }

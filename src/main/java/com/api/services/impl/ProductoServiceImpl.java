@@ -4,14 +4,13 @@ import com.api.domain.models.Categoria;
 import com.api.domain.models.Producto;
 import com.api.dto.request.ProductoRequestDTO;
 import com.api.dto.response.ProductoResponseDTO;
+import com.api.exceptions.CategoryNotFoundException;
 import com.api.exceptions.ProductNotFoundException;
 import com.api.mapper.ProductoMapper;
-import com.api.respositories.CategoriaRepository;
-import com.api.respositories.ProductoRepository;
+import com.api.repositories.CategoriaRepository;
+import com.api.repositories.ProductoRepository;
 import com.api.services.ProductoService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +35,7 @@ public class ProductoServiceImpl implements ProductoService {
 
         Categoria categoria = categoriaRepository.findById(categoriaId);
         if (categoria == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La categoría con ID " + categoriaId + " no existe.");
+            throw new CategoryNotFoundException(categoriaId);
         }
 
         Producto productoNuevo = productoMapper.toEntity(productoRequestDTO, categoria);

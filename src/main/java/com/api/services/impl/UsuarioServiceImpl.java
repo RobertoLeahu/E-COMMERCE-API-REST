@@ -5,15 +5,13 @@ import com.api.domain.models.Usuario;
 import com.api.dto.request.UsuarioRequestDTO;
 import com.api.dto.response.UsuarioResponseDTO;
 import com.api.exceptions.EmailAlreadyExistsException;
-import com.api.exceptions.ProductNotFoundException;
 import com.api.exceptions.UserNotFoundException;
 import com.api.mapper.UsuarioMapper;
-import com.api.respositories.UsuarioRepository;
+import com.api.repositories.UsuarioRepository;
 import com.api.services.UsuarioService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

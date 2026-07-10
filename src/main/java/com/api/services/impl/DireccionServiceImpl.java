@@ -6,8 +6,8 @@ import com.api.dto.request.DireccionRequestDTO;
 import com.api.dto.response.DireccionResponseDTO;
 import com.api.exceptions.UserNotFoundException;
 import com.api.mapper.DireccionMapper;
-import com.api.respositories.DireccionRepository;
-import com.api.respositories.UsuarioRepository;
+import com.api.repositories.DireccionRepository;
+import com.api.repositories.UsuarioRepository;
 import com.api.services.DireccionService;
 import org.springframework.stereotype.Service;
 

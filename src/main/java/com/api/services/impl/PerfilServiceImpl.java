@@ -5,11 +5,10 @@ import com.api.domain.models.Usuario;
 import com.api.dto.request.PerfilRequestDTO;
 import com.api.dto.response.PerfilResponseDTO;
 import com.api.exceptions.ProfileAlreadyAssignedException;
-import com.api.exceptions.ProfileNotFoundException;
 import com.api.exceptions.UserNotFoundException;
 import com.api.mapper.PerfilMapper;
-import com.api.respositories.PerfilRepository;
-import com.api.respositories.UsuarioRepository;
+import com.api.repositories.PerfilRepository;
+import com.api.repositories.UsuarioRepository;
 import com.api.services.PerfilService;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +40,7 @@ public class PerfilServiceImpl implements PerfilService {
 
         Perfil perfil = perfilMapper.toEntity(perfilRequestDTO, usuario);
         Perfil perfilNuevo = perfilRepository.save(perfil);
+        usuario.setPerfil(perfil);
 
         return perfilMapper.toResponse(perfilNuevo);
     }
@@ -56,8 +56,10 @@ public class PerfilServiceImpl implements PerfilService {
     @Override
     public PerfilResponseDTO obtenerPerfilPorIdDeUsuario(Long idUsuario) {
 
-        Perfil perfil = perfilRepository.findById(idUsuario)
-                .orElseThrow(() -> new ProfileNotFoundException(idUsuario));
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new UserNotFoundException(idUsuario));
+
+        Perfil perfil = usuario.getPerfil();
 
         return perfilMapper.toResponse(perfil);
     }
@@ -65,8 +67,10 @@ public class PerfilServiceImpl implements PerfilService {
     @Override
     public PerfilResponseDTO actualizarPerfil(Long idUsuario, PerfilRequestDTO perfilRequestDTO) {
 
-        Perfil perfilExistente = perfilRepository.findById(idUsuario)
-                .orElseThrow(() -> new ProfileNotFoundException(idUsuario));
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new UserNotFoundException(idUsuario));
+
+        Perfil perfilExistente = usuario.getPerfil();
 
         // Validaciones de campos
         if (perfilRequestDTO.nombre() != null && !perfilRequestDTO.nombre().equals(perfilExistente.getNombre())) {

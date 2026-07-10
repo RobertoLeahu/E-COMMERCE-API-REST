@@ -4,7 +4,7 @@ import com.api.domain.models.Categoria;
 import com.api.dto.response.CategoriaResponseDTO;
 import com.api.exceptions.CategoryNotFoundException;
 import com.api.mapper.CategoriaMapper;
-import com.api.respositories.CategoriaRepository;
+import com.api.repositories.CategoriaRepository;
 import com.api.services.CategoriaService;
 import org.springframework.stereotype.Service;
 
